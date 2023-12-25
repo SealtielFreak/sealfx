@@ -2,12 +2,25 @@
 
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
+
 #include "hardware/pwm.h"
 #include "hardware/adc.h"
+#include "hardware/dma.h"
 
 #define LED_PIN_BUILT           25
+
 #define DEFAULT_WRAP_PWM        4096
 #define DEFAULT_DIV_PWM         3
+
+#define DEFAULT_CLOCK_DIV_ADC   0
+#define DEFAULT_GPIO_ADC        26
+#define DEFAULT_CHANNEL_ADC     0
+
+static volatile uint16_t signal = 0;
+
+long mapping(long x, long in_min, long in_max, long out_min, long out_max) {
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
 
 void pwm_init_pin(uint8_t pin, uint slice, uint chan, float div, uint wrap) {
     gpio_set_function(pin, GPIO_FUNC_PWM);
@@ -49,10 +62,9 @@ int main() {
     }
 
     adc_init();
-    adc_gpio_init(26);
-    adc_select_input(0);
-    adc_set_clkdiv(1919);
-
+    adc_gpio_init(DEFAULT_GPIO_ADC);
+    adc_select_input(DEFAULT_CHANNEL_ADC);
+    adc_set_clkdiv(DEFAULT_CLOCK_DIV_ADC);
 
     const uint8_t pwm_0 = 0;
     uint chan_num_0 = pwm_gpio_to_channel(pwm_0);
@@ -67,7 +79,7 @@ int main() {
     multicore_launch_core1(blink);
 
     while (1) {
-        uint16_t signal = adc_read();
+        signal = adc_read();
 
         pwm_set_chan_level(slice_num_0, chan_num_0, signal);
         pwm_set_chan_level(slice_num_1, chan_num_1, signal & 0x7ff);
