@@ -16,13 +16,14 @@
 #define DEFAULT_GPIO_ADC        26
 #define DEFAULT_CHANNEL_ADC     0
 
-#define MAX_DELAY 100000
+#define MAX_BUFFER_SPACE        104935
 
-static uint16_t delay_buffer[MAX_DELAY];
+static uint16_t buffer[MAX_BUFFER_SPACE];
+
 unsigned int delay_counter = 0;
-unsigned int delay_depth = MAX_DELAY;
+unsigned int delay_depth = MAX_BUFFER_SPACE;
 
-uint16_t distortion_value = 1500; //good value to start.
+uint16_t distortion_value = 1500;
 
 long mapping(long x, long in_min, long in_max, long out_min, long out_max) {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
@@ -91,8 +92,7 @@ int main() {
     while (1) {
         uint16_t signal = adc_read();
 
-		signal = distortion(signal);
-		// signal = delay_long(signal);
+		signal = delay_long(signal);
 
         pwm_set_chan_level(slice_num_0, chan_num_0, signal);
         pwm_set_chan_level(slice_num_1, chan_num_1, signal & 0x7ff);
@@ -112,12 +112,10 @@ uint16_t distortion(uint16_t signal) {
 }
 
 uint16_t delay_long(uint16_t signal) {
+    buffer[delay_counter] = signal;
 	delay_counter++;
-	delay_buffer[delay_counter] = signal;
+
+    delay_counter %= delay_depth;
 	
-	if(delay_counter > delay_depth) {
-		delay_counter = 0;
-	}
-	
-	return (delay_buffer[delay_counter] + signal) >> 1;
+	return (buffer[delay_counter] + signal) >> 2;
 }
