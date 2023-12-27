@@ -26,7 +26,7 @@
 #define DEFAULT_GPIO_PWM0           17
 #define DEFAULT_GPIO_PWM1           16
 
-#define DEFAULT_HZ_PWM              9600000
+#define DEFAULT_HZ_PWM              1000000
 
 #define DEFAULT_WRAP_PWM            128
 #define DEFAULT_CLKDIV_PWM          get_clkdiv_hz(DEFAULT_HZ_PWM)
@@ -99,7 +99,7 @@ int main() {
         uint16_t signal = adc_read();
 
         // signal = reverb(signal);
-        signal = echo(signal);
+        // signal = echo(signal);
         // signal = longdelay(signal);
         // signal = tremolo(signal);
         // signal = longdelay(signal);
