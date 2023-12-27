@@ -35,7 +35,6 @@
 #define DEFAULT_GPIO_ADC            26
 #define DEFAULT_CHANNEL_ADC         0
 
-
 long mapping(long x, long in_min, long in_max, long out_min, long out_max) {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
@@ -99,14 +98,13 @@ int main() {
         uint16_t signal = adc_read();
 
         // signal = reverb(signal);
-        // signal = echo(signal);
         // signal = longdelay(signal);
         // signal = tremolo(signal);
-        // signal = longdelay(signal);
         // signal = octaver(signal);
         // signal = distortion(signal);
         // signal = fuzz(signal);
         // signal = booster(signal);
+        signal = echo(signal);
 
         pwm_set_chan_level(slice_num_0, chan_num_0, signal & 127);
         pwm_set_chan_level(slice_num_1, chan_num_1, signal >> 7);
