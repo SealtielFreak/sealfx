@@ -14,12 +14,12 @@
 #include "fx/booster.h"
 #include "fx/fuzz.h"
 #include "fx/distortion.h"
+#include "fx/bitcrush.h"
+#include "fx/tremolo.h"
 
-#define get_clkdiv_hz(n) ((48000000 * 256) / (n * 65536))
+#define get_clkdiv_hz(n) ((48000000.f * 256) / (n * 65536))
 
 #define LED_PIN_BUILT               25
-
-#define DEFAULT_CLKDIV_ADC
 
 #define DEFAULT_GPIO_PWM0           17
 #define DEFAULT_GPIO_PWM1           16
@@ -96,10 +96,12 @@ int main() {
     while (1) {
         uint16_t signal = adc_read();
 
+        signal = tremolo(signal);
         // signal = longdelay(signal);
-        signal = reverb(signal);
+        // signal = reverb(signal);
         // signal = distortion(signal);
-        // signal = fuzz(signal);
+        signal = fuzz(signal);
+        // signal = booster(signal);
 
         pwm_set_chan_level(slice_num_0, chan_num_0, signal & 0x3F);
         pwm_set_chan_level(slice_num_1, chan_num_1, signal >> 6);
