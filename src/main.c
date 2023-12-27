@@ -17,6 +17,7 @@
 #include "fx/bitcrush.h"
 #include "fx/tremolo.h"
 #include "fx/echo.h"
+#include "fx/octaver.h"
 
 #define get_clkdiv_hz(n) ((48000000.f * 256) / (n * 65536))
 
@@ -97,10 +98,11 @@ int main() {
     while (1) {
         uint16_t signal = adc_read();
 
-        signal = echo(signal);
+        // signal = echo(signal);
+        // signal = longdelay(signal);
         // signal = tremolo(signal);
         // signal = longdelay(signal);
-        // signal = reverb(signal);
+        signal = octaver(signal);
         // signal = distortion(signal);
         // signal = fuzz(signal);
         // signal = booster(signal);

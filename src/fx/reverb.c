@@ -24,11 +24,7 @@ uint16_t reverb(uint16_t signal) {
             (signal + get_counter_value_memory_bank(bank_counter_buff2)) >> decay
     );
 
-    bank_counter_buff0++;
-
-    if (bank_counter_buff0 > DEFAULT_SPLIT_BANK_SIZE) {
-        bank_counter_buff0 = 0; // % MAX_BUFFER_GLOBAL_SPACE
-    }
+    bank_counter_buff0 = (bank_counter_buff0 + 1) % DEFAULT_SPLIT_BANK_SIZE;
 
     bank_counter_buff1++;
 
