@@ -7,15 +7,16 @@
 #include "hardware/adc.h"
 #include "hardware/dma.h"
 
-#include "bank_memory.h"
+#include "bankmemory.h"
 
 #include "fx/reverb.h"
-#include "fx/delay.h"
+#include "fx/longdelay.h"
 #include "fx/booster.h"
 #include "fx/fuzz.h"
 #include "fx/distortion.h"
 #include "fx/bitcrush.h"
 #include "fx/tremolo.h"
+#include "fx/echo.h"
 
 #define get_clkdiv_hz(n) ((48000000.f * 256) / (n * 65536))
 
@@ -96,11 +97,12 @@ int main() {
     while (1) {
         uint16_t signal = adc_read();
 
-        signal = tremolo(signal);
+        signal = echo(signal);
+        // signal = tremolo(signal);
         // signal = longdelay(signal);
         // signal = reverb(signal);
         // signal = distortion(signal);
-        signal = fuzz(signal);
+        // signal = fuzz(signal);
         // signal = booster(signal);
 
         pwm_set_chan_level(slice_num_0, chan_num_0, signal & 0x3F);

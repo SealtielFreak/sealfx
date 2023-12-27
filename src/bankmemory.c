@@ -1,4 +1,4 @@
-#include "bank_memory.h"
+#include "bankmemory.h"
 
 volatile static uint16_t global_bank_memory[MAX_BUFFER_GLOBAL_SPACE] = {0};
 

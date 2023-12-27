@@ -1,6 +1,6 @@
 #include "fx/reverb.h"
 
-#include "bank_memory.h"
+#include "bankmemory.h"
 
 
 static uint8_t decay = 1;
