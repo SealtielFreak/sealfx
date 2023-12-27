@@ -28,7 +28,7 @@
 
 #define DEFAULT_HZ_PWM              9600000
 
-#define DEFAULT_WRAP_PWM            64
+#define DEFAULT_WRAP_PWM            128
 #define DEFAULT_CLKDIV_PWM          get_clkdiv_hz(DEFAULT_HZ_PWM)
 
 #define DEFAULT_CLKDIV_ADC          0
@@ -98,16 +98,17 @@ int main() {
     while (1) {
         uint16_t signal = adc_read();
 
-        // signal = echo(signal);
+        // signal = reverb(signal);
+        signal = echo(signal);
         // signal = longdelay(signal);
         // signal = tremolo(signal);
         // signal = longdelay(signal);
-        signal = octaver(signal);
+        // signal = octaver(signal);
         // signal = distortion(signal);
         // signal = fuzz(signal);
         // signal = booster(signal);
 
-        pwm_set_chan_level(slice_num_0, chan_num_0, signal & 0x3F);
-        pwm_set_chan_level(slice_num_1, chan_num_1, signal >> 6);
+        pwm_set_chan_level(slice_num_0, chan_num_0, signal & 127);
+        pwm_set_chan_level(slice_num_1, chan_num_1, signal >> 7);
     }
 }
