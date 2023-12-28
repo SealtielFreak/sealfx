@@ -1,4 +1,4 @@
-#include "interface.h"
+#include "interface/audio.h"
 
 #include "hardware/pwm.h"
 #include "hardware/adc.h"

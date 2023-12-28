@@ -1,5 +1,5 @@
-#ifndef SOUNDPI_PFX_INTERFACE_H
-#define SOUNDPI_PFX_INTERFACE_H
+#ifndef SOUNDPI_PFX_AUDIO_H
+#define SOUNDPI_PFX_AUDIO_H
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -14,4 +14,4 @@ uint16_t read_audio(void);
 
 void write_audio(uint16_t signal);
 
-#endif //SOUNDPI_PFX_INTERFACE_H
+#endif //SOUNDPI_PFX_AUDIO_H
