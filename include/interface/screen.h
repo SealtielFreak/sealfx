@@ -5,12 +5,12 @@
 
 void screen_clear(void);
 
-void screen_show_cursor(void);
+void show_cursor(void);
 
-void screen_hide_cursor(void);
+void hide_cursor(void);
 
-void screen_putchar(char);
+void putchar(char);
 
-void screen_putstr(const char*);
+void putstr(const char*);
 
 #endif //SOUNDPI_PFX_SCREEN_H

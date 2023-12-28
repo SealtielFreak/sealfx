@@ -73,15 +73,15 @@ void screen_clear(void) {
 
 }
 
-void screen_show_cursor(void) {
+void show_cursor(void) {
 
 }
 
-void screen_hide_cursor(void) {
+void hide_cursor(void) {
 
 }
 
-void screen_putchar(char chr) {
+void putchar(char chr) {
     if(chr == '\n') {
 
     } else {
@@ -89,6 +89,6 @@ void screen_putchar(char chr) {
     }
 }
 
-void screen_putstr(const char* str) {
+void putstr(const char* str) {
 
 }

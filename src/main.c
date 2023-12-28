@@ -9,6 +9,8 @@
 
 #include "conf.h"
 #include "interface/audio.h"
+#include "interface/screen.h"
+#include "interface/bluetooth.h"
 
 #include "fx/reverb.h"
 #include "fx/longdelay.h"
@@ -19,18 +21,9 @@
 #include "fx/tremolo.h"
 #include "fx/echo.h"
 #include "fx/octaver.h"
-#include "interface/screen.h"
-
-#define UART_ID         uart0
-#define BAUD_RATE       9600
-#define DATA_BITS       8
-#define STOP_BITS       1
-#define PARITY          UART_PARITY_NONE
 
 #define I2C_PORT        i2c0
 #define I2C_ADDRESS     0x3C
-
-void init_uart_communication(void);
 
 void init_i2c_communication(void);
 
@@ -40,7 +33,7 @@ static void blink() {
     pwm_init_pin(LED_PIN_BUILT, slice_num, chan_num, DEFAULT_CLKDIV_PWM, 255);
 
     while (1) {
-        uart_puts(UART_ID, "Hello, UART!\r\n");
+        ble_send_str("Hello world\r\n");
 
         for (uint16_t i = 0; i < 255; i += 5) {
             pwm_set_chan_level(slice_num, chan_num, i);
@@ -66,7 +59,7 @@ int main() {
         printf("Failure config clock");
     }
 
-    init_uart_communication();
+    ble_init();
 
     init_i2c_communication();
 
@@ -79,16 +72,6 @@ int main() {
 
         write_audio(signal);
     }
-}
-
-void init_uart_communication(void) {
-    uart_init(UART_ID, BAUD_RATE);
-
-    gpio_set_function(0, GPIO_FUNC_UART);
-    gpio_set_function(1, GPIO_FUNC_UART);
-
-    uart_set_hw_flow(UART_ID, false, false);
-    uart_set_format(UART_ID, DATA_BITS, STOP_BITS, PARITY);
 }
 
 void init_i2c_communication(void) {
