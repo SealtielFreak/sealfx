@@ -4,12 +4,10 @@
 #include <pico/multicore.h>
 
 #include "hardware/pwm.h"
-#include "hardware/adc.h"
-#include "hardware/dma.h"
+#include "hardware/uart.h"
 
 #include "conf.h"
 #include "interface.h"
-#include "bankmemory.h"
 
 #include "fx/reverb.h"
 #include "fx/longdelay.h"
@@ -21,6 +19,12 @@
 #include "fx/echo.h"
 #include "fx/octaver.h"
 
+#define UART_ID         uart0
+#define BAUD_RATE       9600
+#define DATA_BITS       8
+#define STOP_BITS       1
+#define PARITY          UART_PARITY_NONE
+
 long mapping(long x, long in_min, long in_max, long out_min, long out_max) {
     return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
@@ -31,6 +35,8 @@ static void blink() {
     pwm_init_pin(LED_PIN_BUILT, slice_num, chan_num, DEFAULT_CLKDIV_PWM, 255);
 
     while (1) {
+        uart_puts(UART_ID, "Hello, UART!\r\n");
+
         for (uint16_t i = 0; i < 255; i += 5) {
             pwm_set_chan_level(slice_num, chan_num, i);
             sleep_ms(25);
@@ -40,6 +46,8 @@ static void blink() {
             pwm_set_chan_level(slice_num, chan_num, i);
             sleep_ms(25);
         }
+
+        sleep_ms(1000);
     }
 }
 
@@ -52,6 +60,13 @@ int main() {
     while (!set_sys_clock_khz(DEFAULT_FRQ_CPU_KHZ, true)) {
         printf("Failure config clock");
     }
+
+    uart_init(UART_ID, BAUD_RATE);
+    gpio_set_function(0, GPIO_FUNC_UART);
+    gpio_set_function(1, GPIO_FUNC_UART);
+
+    uart_set_hw_flow(UART_ID, false, false);
+    uart_set_format(UART_ID, DATA_BITS, STOP_BITS, PARITY);
 
     multicore_launch_core1(blink);
 
