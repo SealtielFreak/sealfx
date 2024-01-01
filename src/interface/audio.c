@@ -4,13 +4,11 @@
 #include "hardware/adc.h"
 #include "hardware/dma.h"
 
+#include "umath.h"
+
 #include "conf.h"
 
 static uint chan_num_0, slice_num_0, chan_num_1, slice_num_1;
-
-uint16_t mapping(uint16_t x, uint16_t in_min, uint16_t in_max, uint16_t out_min, uint16_t out_max) {
-    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
 
 void pwm_init_pin(uint8_t pin, uint slice, uint chan, float div, uint wrap) {
     gpio_set_function(pin, GPIO_FUNC_PWM);
@@ -44,8 +42,8 @@ uint16_t read_audio(void) {
 }
 
 void write_audio(uint16_t signal) {
-    signal = mapping(signal, 0, 4096, 0, 250);
+    // signal = mapping_u16(signal, 0, 4096, 0, DEFAULT_WRAP_PWM);
 
     pwm_set_chan_level(slice_num_0, chan_num_0, signal);
-    // pwm_set_chan_level(slice_num_1, chan_num_1, signal >> 7);
+    pwm_set_chan_level(slice_num_1, chan_num_1, signal >> 7);
 }

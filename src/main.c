@@ -22,8 +22,12 @@
 #include "fx/echo.h"
 #include "fx/octaver.h"
 
+#include "umath.h"
+
 #define I2C_PORT        i2c0
 #define I2C_ADDRESS     0x3C
+
+static uint16_t signal;
 
 void init_i2c_communication(void);
 
@@ -33,16 +37,16 @@ static void blink() {
     pwm_init_pin(LED_PIN_BUILT, slice_num, chan_num, DEFAULT_CLKDIV_PWM, 255);
 
     while (1) {
-        ble_send_str("Hello world\r\n");
+        const uint16_t limit_signal = mapping_u16(signal, 0, 4096, 20, 255);
 
-        for (uint16_t i = 0; i < 255; i += 5) {
+        for (uint16_t i = 0; i < limit_signal; i += 25) {
             pwm_set_chan_level(slice_num, chan_num, i);
-            sleep_ms(25);
+            sleep_ms(5);
         }
 
-        for (uint16_t i = 255; i > 0; i -= 5) {
+        for (uint16_t i = limit_signal; i > 0; i -= 25) {
             pwm_set_chan_level(slice_num, chan_num, i);
-            sleep_ms(25);
+            sleep_ms(5);
         }
     }
 }
@@ -65,9 +69,9 @@ int main() {
     decode_init();
 
     while (1) {
-        uint16_t signal = read_audio();
+        signal = read_audio();
 
-        signal = echo(signal);
+        // signal = echo(signal);
 
         write_audio(signal);
     }
