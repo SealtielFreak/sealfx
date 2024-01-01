@@ -9,7 +9,7 @@ void show_cursor(void);
 
 void hide_cursor(void);
 
-void putchar(char);
+void putchr(char);
 
 void putstr(const char*);
 

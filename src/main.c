@@ -44,8 +44,6 @@ static void blink() {
             pwm_set_chan_level(slice_num, chan_num, i);
             sleep_ms(25);
         }
-
-        sleep_ms(1000);
     }
 }
 
@@ -61,9 +59,10 @@ int main() {
 
     ble_init();
 
-    init_i2c_communication();
-
     multicore_launch_core1(blink);
+
+    encode_init();
+    decode_init();
 
     while (1) {
         uint16_t signal = read_audio();

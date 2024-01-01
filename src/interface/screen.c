@@ -81,7 +81,7 @@ void hide_cursor(void) {
 
 }
 
-void putchar(char chr) {
+void putchr(char chr) {
     if(chr == '\n') {
 
     } else {
