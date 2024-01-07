@@ -38,14 +38,17 @@ static void blink() {
     uint slice_num = pwm_gpio_to_slice_num(LED_PIN_BUILT);
     pwm_init_pin(LED_PIN_BUILT, slice_num, chan_num, DEFAULT_CLKDIV_PWM, 255);
 
-    char buffinput[86];
+    const size_t len = 86;
+    char buffinput[len];
 
     while (1) {
         if(uart_is_readable(DEFAULT_UART_ID)) {
-            uart_read_blocking(DEFAULT_UART_ID, buffinput, 86);
+            uart_read_blocking(DEFAULT_UART_ID, buffinput, len);
             uart_puts(DEFAULT_UART_ID, "Echo: ");
             uart_puts(DEFAULT_UART_ID, buffinput);
             uart_puts(DEFAULT_UART_ID, "\r\n");
+
+            memset(buffinput, 0, len);
         }
 
         for (uint16_t i = 0; i < 255; i += 5) {
@@ -57,8 +60,6 @@ static void blink() {
             pwm_set_chan_level(slice_num, chan_num, i);
             sleep_ms(5);
         }
-
-        memset(buffinput, 0, 86);
     }
 }
 
