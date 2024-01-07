@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
@@ -36,25 +38,36 @@ static void blink() {
     uint slice_num = pwm_gpio_to_slice_num(LED_PIN_BUILT);
     pwm_init_pin(LED_PIN_BUILT, slice_num, chan_num, DEFAULT_CLKDIV_PWM, 255);
 
+    char buffinput[86];
+
     while (1) {
-        const uint16_t limit_signal = mapping_u16(signal, 0, 4096, 20, 255);
+        if(uart_is_readable(DEFAULT_UART_ID)) {
+            uart_read_blocking(DEFAULT_UART_ID, buffinput, 86);
+            uart_puts(DEFAULT_UART_ID, "Echo: ");
+            uart_puts(DEFAULT_UART_ID, buffinput);
+            uart_puts(DEFAULT_UART_ID, "\r\n");
+        }
 
-        for (uint16_t i = 0; i < limit_signal; i += 25) {
+        for (uint16_t i = 0; i < 255; i += 5) {
             pwm_set_chan_level(slice_num, chan_num, i);
             sleep_ms(5);
         }
 
-        for (uint16_t i = limit_signal; i > 0; i -= 25) {
+        for (uint16_t i = 255; i > 0; i -= 5) {
             pwm_set_chan_level(slice_num, chan_num, i);
             sleep_ms(5);
         }
+
+        memset(buffinput, 0, 86);
     }
 }
 
 int main() {
     stdio_init_all();
+
     stdio_usb_init();
     stdio_usb_connected();
+
     stdio_flush();
 
     while (!set_sys_clock_khz(DEFAULT_FRQ_CPU_KHZ, true)) {
@@ -70,8 +83,6 @@ int main() {
 
     while (1) {
         signal = read_audio();
-
-        signal = echo(signal);
 
         write_audio(signal);
     }

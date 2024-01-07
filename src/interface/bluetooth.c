@@ -1,6 +1,7 @@
 #include "interface/bluetooth.h"
 
 #include <stdio.h>
+#include <string.h>
 
 #include <pico/stdlib.h>
 #include "hardware/uart.h"
@@ -26,9 +27,9 @@ void ble_send_str(const char *s) {
 }
 
 char ble_read(void) {
-    return 0;
+    return uart_getc(DEFAULT_UART_ID);
 }
 
 void ble_read_str(char *s) {
-
+    uart_read_blocking(DEFAULT_UART_ID, (uint8_t*)s, strlen(s));
 }
