@@ -29,6 +29,8 @@
 #define I2C_PORT        i2c0
 #define I2C_ADDRESS     0x3C
 
+#define BUFF_INPUT_LENGHT       86
+
 static uint16_t signal;
 
 void init_i2c_communication(void);
@@ -38,17 +40,15 @@ static void blink() {
     uint slice_num = pwm_gpio_to_slice_num(LED_PIN_BUILT);
     pwm_init_pin(LED_PIN_BUILT, slice_num, chan_num, DEFAULT_CLKDIV_PWM, 255);
 
-    const size_t len = 86;
-    char buffinput[len];
+    char buffinput[BUFF_INPUT_LENGHT];
 
     while (1) {
-        if(uart_is_readable(DEFAULT_UART_ID)) {
-            uart_read_blocking(DEFAULT_UART_ID, buffinput, len);
-            uart_puts(DEFAULT_UART_ID, "Echo: ");
-            uart_puts(DEFAULT_UART_ID, buffinput);
-            uart_puts(DEFAULT_UART_ID, "\r\n");
+        if(!ble_read_str(buffinput, BUFF_INPUT_LENGHT)) {
+            ble_send_str("Effect selected: ");
+            ble_send_str(buffinput);
+            ble_send_str("\r\n");
 
-            memset(buffinput, 0, len);
+            memset(buffinput, 0, BUFF_INPUT_LENGHT);
         }
 
         for (uint16_t i = 0; i < 255; i += 5) {
@@ -84,6 +84,8 @@ int main() {
 
     while (1) {
         signal = read_audio();
+
+        signal = echo(signal);
 
         write_audio(signal);
     }
