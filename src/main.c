@@ -20,7 +20,7 @@
 static uint16_t signal;
 
 effect current_effect = CLEAN;
-effect_rgb current_color = {MAX_RGB_COLOR, MAX_RGB_COLOR, MAX_RGB_COLOR};
+effect_rgb current_color = {0, 0, 0};
 
 static void core1(void) {
     init_blink();

@@ -29,6 +29,6 @@
 #define DEFAULT_LED_G               12
 #define DEFAULT_LED_B               13
 #define DEFAULT_WRAP_RGB            255
-#define DEFAULT_CLKDIV_RGB          8
+#define DEFAULT_CLKDIV_RGB          2
 
 #endif //SOUNDPI_PFX_CONF_H

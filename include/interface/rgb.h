@@ -6,7 +6,7 @@
 
 #include "conf.h"
 
-#define MAX_RGB_COLOR               DEFAULT_WRAP_RGB
+#define MAX_RGB_COLOR               DEFAULT_WRAP_RGB - 1
 
 void rgb_init(void);
 
