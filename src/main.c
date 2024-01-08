@@ -45,6 +45,10 @@ static void blink() {
     while (1) {
         ble_send_str("Hello world from SoundPi\r\n");
 
+        if(ble_is_received()) {
+            ble_send_str("Message received\r\n");
+        }
+
         if(!ble_read_str(buffinput, BUFF_INPUT_LENGHT)) {
             ble_send_str("Effect selected: ");
             ble_send_str(buffinput);

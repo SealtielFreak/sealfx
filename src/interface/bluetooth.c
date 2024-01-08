@@ -15,24 +15,9 @@
 
 volatile uint8_t tx_buffer[BUFFER_SIZE_UART_DMA];
 volatile uint8_t rx_buffer[BUFFER_SIZE_UART_DMA];
-volatile bool newline_received = false;
-
 dma_channel_config dma_chan;
 
-void dma_rx_irq_handler() {
-    dma_hw->ints0 = 1u << DMA_RX_CHANNEL;
-
-    for(size_t i = 0; i < BUFFER_SIZE_UART_DMA; i++) {
-        if(rx_buffer[i] == '\n' || rx_buffer[i] == '\r') {
-            rx_buffer[i] = 0;
-            dma_channel_abort(DMA_RX_CHANNEL);
-            newline_received = true;
-        }
-    }
-}
-
 void ble_dma_init(void) {
-
     dma_chan = dma_channel_get_default_config(DMA_TX_CHANNEL);
     channel_config_set_transfer_data_size(&dma_chan, DMA_SIZE_8);
     channel_config_set_read_increment(&dma_chan, true);
@@ -131,7 +116,7 @@ int ble_read_str(char *s, size_t len) {
 }
 
 bool ble_is_received(void) {
-    return newline_received;
+    return strlen(rx_buffer) > 0;
 }
 
 void ble_flush(void) {
