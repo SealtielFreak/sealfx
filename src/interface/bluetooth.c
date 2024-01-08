@@ -103,7 +103,7 @@ int ble_send_str(const char *s) {
     memcpy(tx_buffer, s, len);
 
     dma_channel_transfer_from_buffer_now(DMA_TX_CHANNEL, tx_buffer, len);
-    dma_channel_wait_for_finish_blocking(DMA_TX_CHANNEL);
+    // dma_channel_wait_for_finish_blocking(DMA_TX_CHANNEL);
 
     return 0;
 }
@@ -118,7 +118,7 @@ int ble_read_str(char *s, size_t len) {
     }
 
     dma_channel_transfer_to_buffer_now(DMA_RX_CHANNEL, rx_buffer, BUFFER_SIZE_UART_DMA);
-    dma_channel_wait_for_finish_blocking(DMA_RX_CHANNEL);
+    // dma_channel_wait_for_finish_blocking(DMA_RX_CHANNEL);
 
     for(size_t i = 0; i < BUFFER_SIZE_UART_DMA; i++) {
         char r = rx_buffer[i];
