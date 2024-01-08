@@ -4,6 +4,8 @@
 
 #include "stdint.h"
 
+#include "conf.h"
+
 #define MAX_RGB_COLOR               DEFAULT_WRAP_RGB
 
 void rgb_init(void);

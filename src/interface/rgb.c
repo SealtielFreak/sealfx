@@ -6,7 +6,6 @@
 
 #include "low/pwm.h"
 
-#include "conf.h"
 
 static uint chan_num_r, slice_num_r, chan_num_g, slice_num_g, chan_num_b, slice_num_b;
 
