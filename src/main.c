@@ -10,9 +10,11 @@
 #include "hardware/i2c.h"
 
 #include "conf.h"
+
 #include "interface/audio.h"
 #include "interface/screen.h"
 #include "interface/bluetooth.h"
+#include "interface/rgb.h"
 
 #include "fx/reverb.h"
 #include "fx/longdelay.h"
@@ -25,6 +27,7 @@
 #include "fx/octaver.h"
 
 #include "umath.h"
+#include "low/pwm.h"
 
 #define I2C_PORT        i2c0
 #define I2C_ADDRESS     0x3C
@@ -36,11 +39,23 @@ static uint16_t signal;
 void init_i2c_communication(void);
 
 static void blink() {
+    ble_init();
+
+    /*
     uint chan_num = pwm_gpio_to_channel(LED_PIN_BUILT);
     uint slice_num = pwm_gpio_to_slice_num(LED_PIN_BUILT);
     pwm_init_pin(LED_PIN_BUILT, slice_num, chan_num, DEFAULT_CLKDIV_PWM, 255);
+    */
 
     char buffinput[BUFF_INPUT_LENGHT];
+
+    gpio_init(DEFAULT_LED_R);
+    gpio_init(DEFAULT_LED_G);
+    gpio_init(DEFAULT_LED_B);
+
+    gpio_set_dir(DEFAULT_LED_R, GPIO_OUT);
+    gpio_set_dir(DEFAULT_LED_G, GPIO_OUT);
+    gpio_set_dir(DEFAULT_LED_B, GPIO_OUT);
 
     while (1) {
         if(!ble_read_str(buffinput, BUFF_INPUT_LENGHT)) {
@@ -51,6 +66,23 @@ static void blink() {
             memset(buffinput, 0, BUFF_INPUT_LENGHT);
         }
 
+        gpio_put(DEFAULT_LED_R, 1);
+        sleep_ms(25);
+        gpio_put(DEFAULT_LED_R, 0);
+        sleep_ms(25);
+
+        gpio_put(DEFAULT_LED_G, 1);
+        sleep_ms(25);
+        gpio_put(DEFAULT_LED_G, 0);
+        sleep_ms(25);
+
+        gpio_put(DEFAULT_LED_B, 1);
+        sleep_ms(25);
+        gpio_put(DEFAULT_LED_B, 0);
+        sleep_ms(25);
+
+
+        /*
         for (uint16_t i = 0; i < 255; i += 5) {
             pwm_set_chan_level(slice_num, chan_num, i);
             sleep_ms(5);
@@ -60,6 +92,7 @@ static void blink() {
             pwm_set_chan_level(slice_num, chan_num, i);
             sleep_ms(5);
         }
+        */
     }
 }
 
@@ -75,8 +108,6 @@ int main() {
         printf("Failure config clock");
     }
 
-    ble_init();
-
     multicore_launch_core1(blink);
 
     encode_init();
@@ -85,7 +116,7 @@ int main() {
     while (1) {
         signal = read_audio();
 
-        signal = longdelay(signal);
+        signal = echo(signal);
 
         write_audio(signal);
     }

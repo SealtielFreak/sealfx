@@ -4,8 +4,6 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-void pwm_init_pin(uint8_t pin, uint slice, uint chan, float div, uint wrap);
-
 void encode_init(void);
 
 void decode_init(void);

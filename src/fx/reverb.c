@@ -3,7 +3,7 @@
 #include "bankmemory.h"
 
 
-static uint8_t decay = 3;
+static uint8_t decay = 1;
 static uint32_t bank_counter_buff0 = 10000, bank_counter_buff1 = 5000, bank_counter_buff2 = 2500;
 
 uint16_t reverb(uint16_t signal) {

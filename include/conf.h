@@ -19,10 +19,16 @@
 #define DEFAULT_GPIO_ADC            26
 #define DEFAULT_CHANNEL_ADC         0
 
-#define DEFAULT_UART_ID                     uart0
-#define DEFAULT_BAUD_RATE                   9600
-#define DEFAULT_DATA_BITS                   8
-#define DEFAULT_STOP_BITS                   1
-#define DEFAULT_PARITY                      UART_PARITY_NONE
+#define DEFAULT_UART_ID             uart0
+#define DEFAULT_BAUD_RATE           9600
+#define DEFAULT_DATA_BITS           8
+#define DEFAULT_STOP_BITS           1
+#define DEFAULT_PARITY              UART_PARITY_NONE
+
+#define DEFAULT_LED_R               11
+#define DEFAULT_LED_G               12
+#define DEFAULT_LED_B               13
+#define DEFAULT_WRAP_RGB            255
+#define DEFAULT_CLKDIV_RGB          8
 
 #endif //SOUNDPI_PFX_CONF_H
