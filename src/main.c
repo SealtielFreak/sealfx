@@ -85,7 +85,7 @@ int main() {
     while (1) {
         signal = read_audio();
 
-        signal = echo(signal);
+        signal = longdelay(signal);
 
         write_audio(signal);
     }
