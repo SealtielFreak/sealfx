@@ -23,6 +23,8 @@ effect fx_from_string(const char* str) {
         return CLEAN;
     } else if(!strcmp("delay", str)) {
         return DELAY;
+    }  else if(!strcmp("reverb", str)) {
+        return REVERB;
     } else if(!strcmp("echo", str)) {
         return ECHO;
     } else if(!strcmp("booster", str)) {
