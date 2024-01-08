@@ -15,19 +15,13 @@
 #include "interface/screen.h"
 #include "interface/bluetooth.h"
 #include "interface/rgb.h"
+#include "interface/blink.h"
 
-#include "fx/reverb.h"
-#include "fx/longdelay.h"
-#include "fx/booster.h"
-#include "fx/fuzz.h"
-#include "fx/distortion.h"
-#include "fx/bitcrush.h"
-#include "fx/tremolo.h"
-#include "fx/echo.h"
-#include "fx/octaver.h"
-
-#include "umath.h"
 #include "low/pwm.h"
+
+#include "fx.h"
+#include "umath.h"
+#include "ustr.h"
 
 #define I2C_PORT        i2c0
 #define I2C_ADDRESS     0x3C
@@ -38,61 +32,37 @@ static uint16_t signal;
 
 void init_i2c_communication(void);
 
-static void blink() {
-    ble_init();
+effect current_effect = CLEAN;
 
-    /*
-    uint chan_num = pwm_gpio_to_channel(LED_PIN_BUILT);
-    uint slice_num = pwm_gpio_to_slice_num(LED_PIN_BUILT);
-    pwm_init_pin(LED_PIN_BUILT, slice_num, chan_num, DEFAULT_CLKDIV_PWM, 255);
-    */
+static void core1(void) {
+    init_blink();
+    ble_init();
+    rgb_init();
 
     char buffinput[BUFF_INPUT_LENGHT];
 
-    gpio_init(DEFAULT_LED_R);
-    gpio_init(DEFAULT_LED_G);
-    gpio_init(DEFAULT_LED_B);
-
-    gpio_set_dir(DEFAULT_LED_R, GPIO_OUT);
-    gpio_set_dir(DEFAULT_LED_G, GPIO_OUT);
-    gpio_set_dir(DEFAULT_LED_B, GPIO_OUT);
-
     while (1) {
         if(!ble_read_str(buffinput, BUFF_INPUT_LENGHT)) {
-            ble_send_str("Effect selected: ");
-            ble_send_str(buffinput);
-            ble_send_str("\r\n");
+            buffinput[findchr(buffinput, '\r')] = '\0';
+            effect effect_selected = fx_from_string(buffinput);
+
+            if(effect_selected != UNKNOWN) {
+
+                current_effect = fx_from_string(buffinput);
+
+                ble_send_str("OK+Effect=");
+                ble_send_str(buffinput);
+                ble_send_str("\r\n");
+            } else {
+                ble_send_str("ERROR+EffectNoFound=");
+                ble_send_str(buffinput);
+                ble_send_str("\r\n");
+            }
 
             memset(buffinput, 0, BUFF_INPUT_LENGHT);
         }
 
-        gpio_put(DEFAULT_LED_R, 1);
-        sleep_ms(25);
-        gpio_put(DEFAULT_LED_R, 0);
-        sleep_ms(25);
-
-        gpio_put(DEFAULT_LED_G, 1);
-        sleep_ms(25);
-        gpio_put(DEFAULT_LED_G, 0);
-        sleep_ms(25);
-
-        gpio_put(DEFAULT_LED_B, 1);
-        sleep_ms(25);
-        gpio_put(DEFAULT_LED_B, 0);
-        sleep_ms(25);
-
-
-        /*
-        for (uint16_t i = 0; i < 255; i += 5) {
-            pwm_set_chan_level(slice_num, chan_num, i);
-            sleep_ms(5);
-        }
-
-        for (uint16_t i = 255; i > 0; i -= 5) {
-            pwm_set_chan_level(slice_num, chan_num, i);
-            sleep_ms(5);
-        }
-        */
+        blink();
     }
 }
 
@@ -108,7 +78,7 @@ int main() {
         printf("Failure config clock");
     }
 
-    multicore_launch_core1(blink);
+    multicore_launch_core1(core1);
 
     encode_init();
     decode_init();
@@ -116,7 +86,7 @@ int main() {
     while (1) {
         signal = read_audio();
 
-        signal = echo(signal);
+        signal = fx_select_effect(current_effect, signal);
 
         write_audio(signal);
     }
