@@ -118,14 +118,14 @@ int ble_read_str(char *s, size_t len) {
 
     if (rx_buffer[0] == '\0') {
         return 1;
-    } else {
-        for (size_t i = 0; i < BUFFER_SIZE_UART_DMA; i++) {
-            s[i] = rx_buffer[i];
-            if (rx_buffer[i] == '\0') break;
-        }
-
-        return 0;
     }
+
+    for (size_t i = 0; i < BUFFER_SIZE_UART_DMA; i++) {
+        s[i] = rx_buffer[i];
+        if (rx_buffer[i] == '\0') break;
+    }
+
+    memset(rx_buffer, 0, BUFFER_SIZE_UART_DMA);
 
     return 0;
 }
