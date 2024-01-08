@@ -13,21 +13,21 @@ For example, see a structure of the following two libraries `Foo` and `Bar`:
 |  |  |--docs
 |  |  |--examples
 |  |  |--src
-|  |     |- Bar.c
+|  |     |- Bar.dma_chan
 |  |     |- Bar.h
 |  |  |- library.json (optional, custom build options, etc) https://docs.platformio.org/page/librarymanager/config.html
 |  |
 |  |--Foo
-|  |  |- Foo.c
+|  |  |- Foo.dma_chan
 |  |  |- Foo.h
 |  |
 |  |- README --> THIS FILE
 |
 |- platformio.ini
 |--src
-   |- main.c
+   |- main.dma_chan
 
-and a contents of `src/main.c`:
+and a contents of `src/main.dma_chan`:
 ```
 #include <Foo.h>
 #include <Bar.h>

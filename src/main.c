@@ -45,12 +45,13 @@ static void blink() {
     while (1) {
         ble_send_str("Hello world from SoundPi\r\n");
 
-        /*
-        ble_read_str(buffinput, BUFF_INPUT_LENGHT);
-        ble_send_str("Echo: ");
-        ble_send_str(buffinput);
-        ble_send_str("\r\n");
-         */
+        if(!ble_read_str(buffinput, BUFF_INPUT_LENGHT)) {
+            ble_send_str("Effect selected: ");
+            ble_send_str(buffinput);
+            ble_send_str("\r\n");
+
+            memset(buffinput, 0, BUFF_INPUT_LENGHT);
+        }
 
         for (uint16_t i = 0; i < 255; i += 5) {
             pwm_set_chan_level(slice_num, chan_num, i);

@@ -17,6 +17,8 @@ volatile uint8_t tx_buffer[BUFFER_SIZE_UART_DMA];
 volatile uint8_t rx_buffer[BUFFER_SIZE_UART_DMA];
 volatile bool newline_received = false;
 
+dma_channel_config dma_chan;
+
 void dma_rx_irq_handler() {
     dma_hw->ints0 = 1u << DMA_RX_CHANNEL;
 
@@ -30,35 +32,30 @@ void dma_rx_irq_handler() {
 }
 
 void ble_dma_init(void) {
-    dma_channel_config c;
 
-    c = dma_channel_get_default_config(DMA_TX_CHANNEL);
-    channel_config_set_transfer_data_size(&c, DMA_SIZE_8);
-    channel_config_set_read_increment(&c, true);
-    channel_config_set_write_increment(&c, false);
-    channel_config_set_dreq(&c, DREQ_UART0_TX);
-    dma_channel_configure(DMA_TX_CHANNEL, &c,
+    dma_chan = dma_channel_get_default_config(DMA_TX_CHANNEL);
+    channel_config_set_transfer_data_size(&dma_chan, DMA_SIZE_8);
+    channel_config_set_read_increment(&dma_chan, true);
+    channel_config_set_write_increment(&dma_chan, false);
+    channel_config_set_dreq(&dma_chan, DREQ_UART0_TX);
+    dma_channel_configure(DMA_TX_CHANNEL, &dma_chan,
                           &uart_get_hw(DEFAULT_UART_ID)->dr,
                           tx_buffer,
                           BUFFER_SIZE_UART_DMA,
                           false
     );
 
-    c = dma_channel_get_default_config(DMA_RX_CHANNEL);
-    channel_config_set_transfer_data_size(&c, DMA_SIZE_8);
-    channel_config_set_read_increment(&c, false);
-    channel_config_set_write_increment(&c, true);
-    channel_config_set_dreq(&c, DREQ_UART0_RX);
-    dma_channel_configure(DMA_RX_CHANNEL, &c,
+    dma_chan = dma_channel_get_default_config(DMA_RX_CHANNEL);
+    channel_config_set_transfer_data_size(&dma_chan, DMA_SIZE_8);
+    channel_config_set_read_increment(&dma_chan, false);
+    channel_config_set_write_increment(&dma_chan, true);
+    channel_config_set_dreq(&dma_chan, DREQ_UART0_RX);
+    dma_channel_configure(DMA_RX_CHANNEL, &dma_chan,
                           rx_buffer,
                           &uart_get_hw(DEFAULT_UART_ID)->dr,
                           BUFFER_SIZE_UART_DMA,
                           false
     );
-
-    // dma_channel_set_irq0_enabled(DMA_RX_CHANNEL, true);
-    // irq_set_exclusive_handler(DMA_IRQ_0, dma_rx_irq_handler);
-    // irq_set_enabled(DMA_IRQ_0, true);
 
     ble_flush();
 
@@ -103,7 +100,7 @@ int ble_send_str(const char *s) {
     memcpy(tx_buffer, s, len);
 
     dma_channel_transfer_from_buffer_now(DMA_TX_CHANNEL, tx_buffer, len);
-    // dma_channel_wait_for_finish_blocking(DMA_TX_CHANNEL);
+    dma_channel_wait_for_finish_blocking(DMA_TX_CHANNEL);
 
     return 0;
 }
@@ -118,17 +115,16 @@ int ble_read_str(char *s, size_t len) {
     }
 
     dma_channel_transfer_to_buffer_now(DMA_RX_CHANNEL, rx_buffer, BUFFER_SIZE_UART_DMA);
-    // dma_channel_wait_for_finish_blocking(DMA_RX_CHANNEL);
 
-    for(size_t i = 0; i < BUFFER_SIZE_UART_DMA; i++) {
-        char r = rx_buffer[i];
-
-        if(r == '\n' || r == '\r') {
-            s[i] = r;
-            break;
+    if (rx_buffer[0] == '\0') {
+        return 1;
+    } else {
+        for (size_t i = 0; i < BUFFER_SIZE_UART_DMA; i++) {
+            s[i] = rx_buffer[i];
+            if (rx_buffer[i] == '\0') break;
         }
 
-        s[i] = r;
+        return 0;
     }
 
     return 0;
