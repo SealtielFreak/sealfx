@@ -1,4 +1,4 @@
-#include "i2c.h"
+#include "interface/i2c.h"
 
 #include <pico/stdlib.h>
 
