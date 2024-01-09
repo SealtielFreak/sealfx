@@ -20,7 +20,7 @@ uint chan_num, slice_num;
 void init_blink(void) {
     chan_num = pwm_gpio_to_channel(LED_PIN_BUILT);
     slice_num = pwm_gpio_to_slice_num(LED_PIN_BUILT);
-    pwm_init_pin(LED_PIN_BUILT, slice_num, chan_num, DEFAULT_CLKDIV_PWM, 255);
+    pwm_init_pin(LED_PIN_BUILT, slice_num, chan_num, get_clkdiv_hz(1000000), 255);
 }
 
 void blink(void) {

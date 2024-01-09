@@ -2,7 +2,7 @@
 #define SOUNDPI_PFX_CONF_H
 
 
-#define get_clkdiv_hz(n) ((48000000.f * 256) / (n * 65536))
+#include "umath.h"
 
 #define DEFAULT_FRQ_CPU_KHZ         270000
 
@@ -11,9 +11,8 @@
 #define DEFAULT_GPIO_PWM0           17
 #define DEFAULT_GPIO_PWM1           16
 
-#define DEFAULT_HZ_PWM              (48000000 / 3) // 16Mhz
+#define DEFAULT_HZ_PWM              16000000
 #define DEFAULT_WRAP_PWM            64
-#define DEFAULT_CLKDIV_PWM          get_clkdiv_hz(DEFAULT_HZ_PWM)
 
 #define DEFAULT_CLKDIV_ADC          0
 #define DEFAULT_GPIO_ADC            26
@@ -30,5 +29,7 @@
 #define DEFAULT_LED_B               13
 #define DEFAULT_WRAP_RGB            255
 #define DEFAULT_CLKDIV_RGB          2
+
+#define DEFAULT_CHANNEL_ADC_CPU     4
 
 #endif //SOUNDPI_PFX_CONF_H
