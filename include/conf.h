@@ -11,7 +11,7 @@
 #define DEFAULT_GPIO_PWM0           17
 #define DEFAULT_GPIO_PWM1           16
 
-#define DEFAULT_HZ_PWM              96000000
+#define DEFAULT_HZ_PWM              48000000
 #define DEFAULT_WRAP_PWM            64
 #define DEFAULT_CLKDIV_PWM          get_clkdiv_hz(DEFAULT_HZ_PWM)
 

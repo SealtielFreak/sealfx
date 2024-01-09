@@ -10,9 +10,11 @@
 #include "fx/bitcrush.h"
 #include "fx/tremolo.h"
 #include "fx/octaver.h"
+#include "fx/daftpunk.h"
+#include "fx/vibrato.h"
 
 typedef enum {
-    UNKNOWN, CLEAN, REVERB, DELAY, ECHO, BOOSTER, FUZZ, DISTORTION, BITCRUSH, TREMOLO, OCTAVER, DAFTPUNK
+    UNKNOWN, CLEAN, REVERB, DELAY, ECHO, BOOSTER, FUZZ, DISTORTION, BITCRUSH, TREMOLO, OCTAVER, DAFTPUNK, VIBRATO
 } effect;
 
 typedef struct {
