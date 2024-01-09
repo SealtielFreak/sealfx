@@ -1,6 +1,6 @@
 #include "bankmemory.h"
 
-volatile static uint16_t global_bank_memory[MAX_BUFFER_GLOBAL_SPACE] = {0};
+volatile uint16_t global_bank_memory[MAX_BUFFER_GLOBAL_SPACE] = {0};
 
 uint16_t get_counter_value_memory_bank(unsigned long index) {
     if(index > MAX_BUFFER_GLOBAL_SPACE - 1) {
