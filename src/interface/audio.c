@@ -10,7 +10,8 @@
 
 #include "conf.h"
 
-static uint chan_num_0, slice_num_0, chan_num_1, slice_num_1;
+static uint8_t chan_num_0, slice_num_0, chan_num_1, slice_num_1;
+uint16_t adj_min = 512, adj_max = 4096;
 
 void encode_init(void) {
     chan_num_0 = pwm_gpio_to_channel(DEFAULT_GPIO_PWM0);
@@ -41,11 +42,16 @@ void write_audio(uint16_t signal) {
 }
 
 uint16_t cleaner_audio(uint16_t signal) {
-    if(signal < 255) {
+    if(signal < adj_min) {
         return 0;
-    } else if(signal > 4096) {
+    } else if(signal > adj_max) {
         return 4096;
     }
 
     return signal;
+}
+
+void encode_cleaner_adjust(uint16_t min, uint16_t max) {
+    adj_min = min;
+    adj_max = max;
 }
