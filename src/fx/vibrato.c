@@ -2,7 +2,7 @@
 
 #include <stdbool.h>
 
-#include "bankmemory.h"
+#include "system/bankmemory.h"
 
 static uint32_t bank_counter_buff = 0, delay_depth = 100, delay_depth_max = 100, delay_depth_min = 10;
 static bool count_up;
