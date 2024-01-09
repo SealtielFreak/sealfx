@@ -34,8 +34,8 @@ uint16_t read_audio(void) {
 }
 
 void write_audio(uint16_t signal) {
-    const uint16_t ch0 = mapping_u16(signal, 0, 4096, 0, DEFAULT_WRAP_PWM);
+    const uint16_t ch0 = signal;
 
-    pwm_set_chan_level(slice_num_0, chan_num_0, ch0);
-    pwm_set_chan_level(slice_num_1, chan_num_1, ch0 >> 3);
+    pwm_set_chan_level(slice_num_0, chan_num_0, ch0 & 63);
+    pwm_set_chan_level(slice_num_1, chan_num_1, ch0 >> 6);
 }
