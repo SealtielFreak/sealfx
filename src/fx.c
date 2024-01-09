@@ -3,6 +3,7 @@
 #include "interface/rgb.h"
 
 #include "string.h"
+#include "fx/daftpunk.h"
 
 uint16_t fx_select_effect(effect index, uint16_t signal) {
     switch (index) {
@@ -15,6 +16,7 @@ uint16_t fx_select_effect(effect index, uint16_t signal) {
         case BITCRUSH: return bitcrush(signal);
         case TREMOLO: return tremolo(signal);
         case OCTAVER: return octaver(signal);
+        case DAFTPUNK: return daftpunk(signal);
     }
 
     return signal;
@@ -41,6 +43,8 @@ effect fx_from_string(const char* str) {
         return TREMOLO;
     } else if(!strcmp("octaver", str)) {
         return OCTAVER;
+    } else if(!strcmp("daftpunk", str)) {
+        return DAFTPUNK;
     }
 
     return UNKNOWN;
@@ -57,6 +61,7 @@ effect_rgb fx_rgb_color(effect index) {
         case BITCRUSH: return (effect_rgb) {MAX_RGB_COLOR, MAX_RGB_COLOR, MAX_RGB_COLOR};
         case TREMOLO: return (effect_rgb) {MAX_RGB_COLOR, MAX_RGB_COLOR, MAX_RGB_COLOR};
         case OCTAVER: return (effect_rgb) {MAX_RGB_COLOR, MAX_RGB_COLOR, MAX_RGB_COLOR};
+        case DAFTPUNK: return (effect_rgb) {MAX_RGB_COLOR, MAX_RGB_COLOR, MAX_RGB_COLOR};
     }
 
     return (effect_rgb) {0, 0, 0};

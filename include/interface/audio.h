@@ -12,4 +12,6 @@ uint16_t read_audio(void);
 
 void write_audio(uint16_t signal);
 
+uint16_t cleaner_audio(uint16_t signal);
+
 #endif //SOUNDPI_PFX_AUDIO_H
