@@ -4,14 +4,14 @@
 
 #define get_clkdiv_hz(n) ((48000000.f * 256) / (n * 65536))
 
-#define DEFAULT_FRQ_CPU_KHZ         300000
+#define DEFAULT_FRQ_CPU_KHZ         270000
 
 #define LED_PIN_BUILT               25
 
 #define DEFAULT_GPIO_PWM0           17
 #define DEFAULT_GPIO_PWM1           16
 
-#define DEFAULT_HZ_PWM              (48000000 / 2)
+#define DEFAULT_HZ_PWM              (48000000 / 3) // 16Mhz
 #define DEFAULT_WRAP_PWM            64
 #define DEFAULT_CLKDIV_PWM          get_clkdiv_hz(DEFAULT_HZ_PWM)
 
