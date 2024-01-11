@@ -19,8 +19,7 @@
 
 #define BUFF_STR_LENGHT       86
 
-static uint16_t signal;
-
+uint16_t signal, signal_preprocess;
 effect current_effect = CLEAN;
 effect_rgb current_color = {0, 0, 0};
 
@@ -39,6 +38,8 @@ static void core1(void) {
             effect effect_selected = fx_from_string(buffstr);
 
             if(effect_selected != UNKNOWN) {
+                flush_memory_bank();
+                
                 current_effect = fx_from_string(buffstr);
                 current_color = fx_rgb_color(current_effect);
 
@@ -49,6 +50,12 @@ static void core1(void) {
                 sprintf(buffstr, "%.2f", get_cpu_temp_celsius());
 
                 ble_send_str("OK+CPUTemperature=");
+                ble_send_str(buffstr);
+                ble_send_str("\r\n");
+            } else if(!strcmp(buffstr, "signal")) {
+                sprintf(buffstr, "%i", signal_preprocess);
+
+                ble_send_str("OK+Signal=");
                 ble_send_str(buffstr);
                 ble_send_str("\r\n");
             } else {
@@ -84,9 +91,9 @@ int main() {
     decode_init();
 
     while (1) {
-        signal = read_audio();
+        signal_preprocess = read_audio();
 
-        signal = fx_select_effect(current_effect, signal);
+        signal = fx_select_effect(current_effect, signal_preprocess);
 
         write_audio(signal);
     }
