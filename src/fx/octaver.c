@@ -1,6 +1,6 @@
 #include "fx/octaver.h"
 
-#include "bankmemory.h"
+#include "system/bankmemory.h"
 
 static uint32_t delay_write = 0, delay_read = 0, counter = 0, divider = 0;
 

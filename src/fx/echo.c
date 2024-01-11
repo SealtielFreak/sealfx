@@ -1,6 +1,6 @@
 #include "fx/echo.h"
 
-#include "bankmemory.h"
+#include "system/bankmemory.h"
 
 static uint8_t decay = 1;
 static uint32_t bank_counter_buff = 0;

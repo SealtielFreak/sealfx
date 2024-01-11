@@ -14,4 +14,6 @@ void write_audio(uint16_t signal);
 
 uint16_t cleaner_audio(uint16_t signal);
 
+void encode_cleaner_adjust(uint16_t min, uint16_t max);
+
 #endif //SOUNDPI_PFX_AUDIO_H

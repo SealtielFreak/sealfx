@@ -1,6 +1,6 @@
 #include "fx/longdelay.h"
 
-#include "bankmemory.h"
+#include "system/bankmemory.h"
 
 static uint8_t decay = 2;
 static uint32_t bank_counter_buff = 0;
