@@ -11,8 +11,8 @@
 #define DEFAULT_GPIO_PWM0           17
 #define DEFAULT_GPIO_PWM1           16
 
-#define DEFAULT_HZ_PWM              48000000
-#define DEFAULT_WRAP_PWM            64
+#define DEFAULT_CLKDIV_PWM          1
+#define DEFAULT_WRAP_PWM            4096
 
 #define DEFAULT_CLKDIV_ADC          0
 #define DEFAULT_GPIO_ADC            26
