@@ -30,7 +30,7 @@ void decode_init(void) {
 }
 
 uint16_t read_audio(void) {
-    return adc_read_from(DEFAULT_CHANNEL_ADC);
+    return mapping_u16(adc_read_from(DEFAULT_CHANNEL_ADC), 0, 4096, 0, DEFAULT_WRAP_PWM);
 }
 
 void write_audio(uint16_t signal) {
