@@ -12,16 +12,17 @@
 #include "fx/octaver.h"
 #include "fx/daftpunk.h"
 #include "fx/vibrato.h"
+#include "fx/metronome.h"
+
+#define LENGTH_EFFECTS_REGISTER         14
 
 typedef enum {
-    UNKNOWN, CLEAN, REVERB, DELAY, ECHO, BOOSTER, FUZZ, DISTORTION, BITCRUSH, TREMOLO, OCTAVER, DAFTPUNK, VIBRATO
+    UNKNOWN, CLEAN, REVERB, DELAY, ECHO, BOOSTER, FUZZ, DISTORTION, BITCRUSH, TREMOLO, OCTAVER, DAFTPUNK, VIBRATO, METRONOME
 } effect;
 
 typedef struct {
     uint16_t r, g, b;
 } effect_rgb;
-
-#define LENGTH_EFFECTS_REGISTER         11
 
 uint16_t fx_select_effect(effect index, uint16_t signal);
 

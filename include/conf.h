@@ -33,4 +33,6 @@
 
 #define DEFAULT_CHANNEL_ADC_CPU     4
 
+#define MAX_AUDIO_VOLUME                DEFAULT_WRAP_ADC
+
 #endif //SOUNDPI_PFX_CONF_H

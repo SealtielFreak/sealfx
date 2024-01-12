@@ -1,14 +1,18 @@
 #include "fx/distortion.h"
 
-uint16_t distortion_value = 25;
+#include "conf.h"
+
+#define MAX_DISTORTION_VOLUME (MAX_AUDIO_VOLUME / 2)
+
+uint16_t distortion_value = 512;
 
 uint16_t distortion(uint16_t signal) {
-    if (signal > 2047 + distortion_value) {
-        signal = 2047 + distortion_value;
+    if (signal > MAX_DISTORTION_VOLUME + distortion_value) {
+        signal = MAX_DISTORTION_VOLUME + distortion_value;
     }
 
-    if (signal < 2047 - distortion_value) {
-        signal = 2047 - distortion_value;
+    if (signal < MAX_DISTORTION_VOLUME - distortion_value) {
+        signal = MAX_DISTORTION_VOLUME - distortion_value;
     }
 
     return signal;
