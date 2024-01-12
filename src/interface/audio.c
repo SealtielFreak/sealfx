@@ -38,8 +38,8 @@ void write_audio(uint16_t signal) {
 
     // pwm_set_chan_level(chan_num_1, chan_num_1, signal_out);
 
-    pwm_set_chan_level(slice_num_0, chan_num_0, signal_out & 255);
-    pwm_set_chan_level(slice_num_1, chan_num_1, signal_out >> 8);
+    pwm_set_chan_level(slice_num_0, chan_num_0, signal_out & 511);
+    pwm_set_chan_level(slice_num_1, chan_num_1, signal_out >> 9);
 }
 
 uint16_t cleaner_audio(uint16_t signal) {
