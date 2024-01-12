@@ -4,7 +4,7 @@
 
 #include "umath.h"
 
-#define DEFAULT_FRQ_CPU_KHZ         270000
+#define DEFAULT_FRQ_CPU_KHZ         240000
 
 #define LED_PIN_BUILT               25
 
