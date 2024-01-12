@@ -36,8 +36,6 @@ uint16_t read_audio(void) {
 void write_audio(uint16_t signal) {
     const uint16_t signal_out = cleaner_audio(signal);
 
-    // pwm_set_chan_level(chan_num_1, chan_num_1, signal_out);
-
     pwm_set_chan_level(slice_num_0, chan_num_0, signal_out & 511);
     pwm_set_chan_level(slice_num_1, chan_num_1, signal_out >> 9);
 }
