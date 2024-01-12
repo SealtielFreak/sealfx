@@ -18,7 +18,6 @@ void rgb_init(void) {
 
     gpio_init(DEFAULT_LED_B);
     gpio_set_dir(DEFAULT_LED_B, GPIO_OUT);
-
 }
 
 void rgb_set_color(uint16_t r, uint16_t g, uint16_t b) {

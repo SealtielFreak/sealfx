@@ -45,6 +45,8 @@ static void core1(void) {
                 current_effect = fx_from_string(buffstr);
                 current_color = fx_rgb_color(current_effect);
 
+                rgb_set_color(current_color.r, current_color.g, current_color.b);
+
                 ble_send_str("OK+Effect=");
                 ble_send_str(buffstr);
                 ble_send_str("\r\n");
@@ -68,8 +70,6 @@ static void core1(void) {
 
             memset(buffstr, '\0', BUFF_STR_LENGHT);
         }
-
-        rgb_set_color(current_color.r, current_color.g, current_color.b);
 
         blink();
     }
