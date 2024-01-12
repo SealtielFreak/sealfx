@@ -3,8 +3,8 @@
 #include "system/bankmemory.h"
 
 
-static uint8_t decay = 3;
-static uint32_t bank_counter_buff0 = 10000, bank_counter_buff1 = 5000, bank_counter_buff2 = 2500;
+static uint8_t decay = 1;
+static uint32_t bank_counter_buff0 = (MAX_BUFFER_GLOBAL_SPACE / 3), bank_counter_buff1 = (MAX_BUFFER_GLOBAL_SPACE / 3) * 2, bank_counter_buff2 = MAX_BUFFER_GLOBAL_SPACE;
 
 uint16_t reverb(uint16_t signal) {
     get_counter_value_memory_bank(bank_counter_buff0);

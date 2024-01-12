@@ -13,6 +13,7 @@
 #include "interface/blink.h"
 
 #include "system/cpu.h"
+#include "system/bankmemory.h"
 
 #include "fx.h"
 #include "ustr.h"
