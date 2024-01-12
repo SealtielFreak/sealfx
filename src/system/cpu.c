@@ -13,7 +13,7 @@ void init_cpu_service(void) {
 }
 
 float get_cpu_temp_celsius(void) {
-    float voltage = adc_read_from(DEFAULT_CHANNEL_ADC_CPU) * (3.3 / 65536);
+    float voltage = adc_read_from(DEFAULT_CHANNEL_ADC_CPU) * (3.3 / 4096);
 
     return 27 - (voltage - 0.706) / 0.001721;
 }

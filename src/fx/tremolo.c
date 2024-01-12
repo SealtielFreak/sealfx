@@ -135,7 +135,7 @@ uint16_t tremolo(uint16_t signal) {
     signal = mapping_u16(signal, 0, 4096, 0, waveform_tremolo[divider]);
 
     divider++;
-    if (divider == 4) {
+    if (divider == 2) {
         divider = 0;
         sample += speedy;
     }

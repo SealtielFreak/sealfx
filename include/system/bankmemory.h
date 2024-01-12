@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #define MAX_BUFFER_GLOBAL_SPACE         100000
-#define DEFAULT_SPLIT_BANK_SIZE         MAX_BUFFER_GLOBAL_SPACE / 4
+#define DEFAULT_SPLIT_BANK_SIZE         (MAX_BUFFER_GLOBAL_SPACE / 4)
 
 uint16_t get_counter_value_memory_bank(unsigned long index);
 

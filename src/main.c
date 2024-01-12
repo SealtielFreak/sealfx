@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include <pico/stdlib.h>
 #include <pico/multicore.h>
@@ -13,11 +14,12 @@
 #include "interface/blink.h"
 
 #include "system/cpu.h"
+#include "system/bankmemory.h"
 
 #include "fx.h"
 #include "ustr.h"
 
-#define BUFF_STR_LENGHT       86
+#define BUFF_STR_LENGHT       24
 
 uint16_t signal, signal_preprocess;
 effect current_effect = CLEAN;
@@ -55,7 +57,7 @@ static void core1(void) {
             } else if(!strcmp(buffstr, "signal")) {
                 sprintf(buffstr, "%i", signal_preprocess);
 
-                ble_send_str("OK+Signal=");
+                ble_send_str("OK+signal=");
                 ble_send_str(buffstr);
                 ble_send_str("\r\n");
             } else {
@@ -64,7 +66,7 @@ static void core1(void) {
                 ble_send_str("\r\n");
             }
 
-            memset(buffstr, 0, BUFF_STR_LENGHT);
+            memset(buffstr, '\0', BUFF_STR_LENGHT);
         }
 
         rgb_set_color(current_color.r, current_color.g, current_color.b);
