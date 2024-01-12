@@ -30,16 +30,16 @@ void decode_init(void) {
 }
 
 uint16_t read_audio(void) {
-    return mapping_u16(adc_read_from(DEFAULT_CHANNEL_ADC), 0, 4096, 0, DEFAULT_WRAP_PWM - 1);
+    return mapping_u16(adc_read_from(DEFAULT_CHANNEL_ADC), 0, 4096, 0, DEFAULT_WRAP_ADC - 1);
 }
 
 void write_audio(uint16_t signal) {
     const uint16_t signal_out = cleaner_audio(signal);
 
-    pwm_set_chan_level(chan_num_1, chan_num_1, signal_out);
+    // pwm_set_chan_level(chan_num_1, chan_num_1, signal_out);
 
-    // pwm_set_chan_level(slice_num_0, chan_num_0, signal_out & 63);
-    // pwm_set_chan_level(slice_num_1, chan_num_1, signal_out >> 6);
+    pwm_set_chan_level(slice_num_0, chan_num_0, signal_out & 255);
+    pwm_set_chan_level(slice_num_1, chan_num_1, signal_out >> 8);
 }
 
 uint16_t cleaner_audio(uint16_t signal) {

@@ -12,8 +12,9 @@
 #define DEFAULT_GPIO_PWM1           16
 
 #define DEFAULT_CLKDIV_PWM          1
-#define DEFAULT_WRAP_PWM            4096 * 4
+#define DEFAULT_WRAP_PWM            256
 
+#define DEFAULT_WRAP_ADC            4096 * 8
 #define DEFAULT_CLKDIV_ADC          0
 #define DEFAULT_GPIO_ADC            26
 #define DEFAULT_CHANNEL_ADC         0
