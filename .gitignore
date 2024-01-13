@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/c,platformio,c++
-# Edit at https://www.toptal.com/developers/gitignore?templates=c,platformio,c++
+# Created by https://www.toptal.com/developers/gitignore/api/dma_chan,platformio,dma_chan++
+# Edit at https://www.toptal.com/developers/gitignore?templates=dma_chan,platformio,dma_chan++
 
 ### C ###
 # Prerequisites
@@ -81,4 +81,4 @@ dkms.conf
 .gcc-flags.json
 .pio
 
-# End of https://www.toptal.com/developers/gitignore/api/c,platformio,c++
+# End of https://www.toptal.com/developers/gitignore/api/dma_chan,platformio,dma_chan++
