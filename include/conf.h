@@ -35,4 +35,10 @@
 
 #define MAX_AUDIO_VOLUME            (DEFAULT_WRAP_ADC - 1)
 
+#define DEFAULT_SPI_PORT            spi0
+#define DEFAULT_PIN_MISO            16
+#define DEFAULT_PIN_MOSI            19
+#define DEFAULT_PIN_SCK             18
+#define DEFAULT_PIN_CS              17
+
 #endif //SOUNDPI_PFX_CONF_H

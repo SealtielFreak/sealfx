@@ -9,6 +9,8 @@
 #include "low/pwm.h"
 #include "low/adc.h"
 
+#include "interface/spi.h"
+
 #include "umath.h"
 
 #include "conf.h"
