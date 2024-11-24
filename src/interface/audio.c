@@ -24,6 +24,14 @@ void encode_init(void) {
     chan_num_1 = pwm_gpio_to_channel(DEFAULT_GPIO_PWM1);
     slice_num_1 = pwm_gpio_to_slice_num(DEFAULT_GPIO_PWM1);
     pwm_init_pin(DEFAULT_GPIO_PWM1, chan_num_1, slice_num_1, DEFAULT_CLKDIV_PWM, DEFAULT_WRAP_PWM);
+	
+	
+	/* Experimenta IRQ */
+    pwm_clear_irq(DEFAULT_GPIO_PWM0);
+    pwm_set_irq_enabled(DEFAULT_GPIO_PWM0, true);
+	
+    pwm_clear_irq(DEFAULT_GPIO_PWM1);
+    pwm_set_irq_enabled(DEFAULT_GPIO_PWM1, true);
 }
 
 void decode_init(void) {
@@ -32,14 +40,14 @@ void decode_init(void) {
 }
 
 uint16_t read_audio(void) {
-    return mapping_u16(adc_read_from(DEFAULT_CHANNEL_ADC), 0, 4096, 0, MAX_AUDIO_VOLUME);
+	return adc_read_from(DEFAULT_CHANNEL_ADC);
 }
 
 void write_audio(uint16_t signal) {
     const uint16_t signal_out = cleaner_audio(signal);
 
-    pwm_set_chan_level(slice_num_0, chan_num_0, signal_out & 511);
-    pwm_set_chan_level(slice_num_1, chan_num_1, signal_out >> 10);
+    pwm_set_chan_level(slice_num_0, chan_num_0, signal_out >> 3);
+    pwm_set_chan_level(slice_num_1, chan_num_1, signal_out >> 3);
 }
 
 uint16_t cleaner_audio(uint16_t signal) {
