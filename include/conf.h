@@ -9,12 +9,13 @@
 #define LED_PIN_BUILT               25
 
 #define DEFAULT_GPIO_PWM0           14
-#define DEFAULT_GPIO_PWM1           16
+#define DEFAULT_GPIO_PWM1           15
 
-#define DEFAULT_CLKDIV_PWM          1
-#define DEFAULT_WRAP_PWM            512 // 9bits
+#define DEFAULT_SLICE_PWM           1
+#define DEFAULT_WRAP_PWM            250
+#define DEFAULT_CLKDIV_PWM          2.0
 
-#define DEFAULT_WRAP_ADC            65536 // 16bits
+#define DEFAULT_WRAP_ADC            4096
 #define DEFAULT_CLKDIV_ADC          0
 #define DEFAULT_GPIO_ADC            26
 #define DEFAULT_CHANNEL_ADC         0
@@ -33,6 +34,8 @@
 
 #define DEFAULT_CHANNEL_ADC_CPU     4
 
-#define MAX_AUDIO_VOLUME            (DEFAULT_WRAP_ADC - 1)
+#define MAX_AUDIO_VOLUME			      (DEFAULT_WRAP_ADC - 1)
+#define MAX_AUDIO_VOLUME_IN         (DEFAULT_WRAP_ADC - 1)
+#define MAX_AUDIO_VOLUME_OUT        (DEFAULT_WRAP_PWM - 1)
 
 #endif //SOUNDPI_PFX_CONF_H
